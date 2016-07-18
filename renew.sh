@@ -70,7 +70,7 @@ function patch_if_necessary() {
 }
 
 function prompt_for_yes_or_exit() {
-    if [ $implicit_yes == "true" ]; then echo "$1 (y/n) y"; return 0; fi
+    if [ "$implicit_yes" == "true" ]; then echo "$1 (y/n) y"; return 0; fi
     
     # http://stackoverflow.com/a/226724
     while true; do
@@ -153,6 +153,7 @@ if [ "$ignore_version_err" != "true" ]; then
 fi
 
 if [ ! -e "acme_tiny.py" ]; then
+    echo Downloading acme_tiny.py...
     curl "$acme_tiny_url" > acme_tiny.py
 fi
 
@@ -270,7 +271,7 @@ echo " script will open port 80 for the duration of the validation."
 echo
 echo " The following iptables rule will be added to your firewall:"
 echo
-echo "     iptables -I INPUT 1 $iptable_rule_args\n"
+printf "     iptables -I INPUT 1 $iptable_rule_args\n"
 echo
 echo " This rule will be removed once the validation completes, or if the script"
 echo " exits at any point. This port will also be opened temporarily every time"
