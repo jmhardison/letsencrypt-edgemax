@@ -4,6 +4,12 @@ set -e
 
 working_dir="/config/letsencrypt"
 
+# Make sure we're root
+if [ $EUID -ne 0 ]; then
+    echo This script must be run as root!
+    exit 1
+fi
+
 mkdir -p "$working_dir"
 
 echo Downloading files to $working_dir...
@@ -15,6 +21,6 @@ curl "https://raw.githubusercontent.com/mgbowen/letsencrypt-edgemax/master/light
 curl "https://raw.githubusercontent.com/mgbowen/letsencrypt-edgemax/master/ubnt-gen-lighty-conf.sh.patch" > ubnt-gen-lighty-conf.sh.patch
 
 chmod +x renew.sh
-./renew.sh
+./renew.sh "$@"
 
 popd > /dev/null
