@@ -1,0 +1,11 @@
+--- /usr/sbin/ubnt-gen-lighty-conf.sh
++++ ubnt-gen-lighty-conf.sh
+@@ -101,7 +101,7 @@
+ cat <<EOF
+ 
+ \$HTTP["scheme"] == "http" {
+-    \$HTTP["url"] !~ "^/index.php/error/" {
++    \$HTTP["url"] !~ "^((/index.php/error/)|(/\.well-known/.*))" {
+         \$HTTP["host"] =~ "^([^\\:]+)(\\:.*)?$" {
+             url.redirect = (
+                 "^(.*)$" => "https://%1:$sport\$1"

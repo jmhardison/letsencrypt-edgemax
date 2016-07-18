@@ -1,0 +1,11 @@
+--- /etc/lighttpd/lighttpd.conf
++++ lighttpd.conf
+@@ -29,7 +29,7 @@
+ include "conf-enabled/15-fastcgi-php.conf"
+ 
+ url.rewrite-once = (
+-	"^(/(lib|media|ws|tests)/.*)" => "$0",
++	"^(/(lib|media|ws|tests|\.well-known)/.*)" => "$0",
+ 	"^/([^\?]+)(\?(.*))?$" => "/index.php/$1?$3"
+ )
+ 
