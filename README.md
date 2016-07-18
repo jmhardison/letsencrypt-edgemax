@@ -67,7 +67,7 @@ The installer script does a few things to the router's filesystem and configurat
   sudo ./install.sh
   ```
   
-  You'll be prompted a few times for information. these prompts should be fairly self-explanatory. It will then perform all the necessary changes to your router and, after it's done executing, should leave you with a Web GUI that serves a valid Let's Encrypt SSL certificate!
+  You'll be prompted a few times for information. These prompts should be fairly self-explanatory. It will then perform all the necessary changes to your router and, after it's done executing, should leave you with a Web GUI that serves a valid Let's Encrypt SSL certificate!
 
 ## Usage
 ```
