@@ -11,6 +11,7 @@ The installer script does a few things to the router's filesystem and configurat
 * `/usr/sbin/ubnt-gen-lighty-conf.sh` is patched (and backed up) to prevent HTTP-to-HTTPS redirection on the ACME challenge URL.
 * A new directory, `/config/letsencrypt/`, is created to hold scripts needed for certificate issuance and renewal to function.
 * A new directory, `/config/auth/letsencrypt/`, is created to hold a few private keys and certificate files.
+* A new directory, `/var/www/htdocs/.well-known`, is created to serve the ACME challenge responses.
 * The configuration nodes `service gui cert-file` and `service gui ca-file` are modified to point to the issued SSL certificate and Let's Encrypt intermediate CA certificate, respectively.
 
 ## Requirements
