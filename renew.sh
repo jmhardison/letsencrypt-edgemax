@@ -392,6 +392,9 @@ $COMMIT
 $SAVE
 
 # Finally, reload the Web GUI
+echo Regenerating configuration files...
+$(/usr/sbin/ubnt-gen-lighty-conf.sh)
+
 echo Restarting Web GUI...
 restart_web_gui
 
