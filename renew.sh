@@ -25,10 +25,11 @@ acme_tiny_url="https://raw.githubusercontent.com/diafygi/acme-tiny/fcb7cd6f66e95
 implicit_yes=''
 ignore_version_err=''
 
-while getopts ':yi' flag; do
+while getopts ':yie' flag; do
     case "${flag}" in
         y) implicit_yes='true' ;;
         i) ignore_version_err='true' ;;
+        e) environment_set='true' ;;
         *) echo "Unexpected option -$OPTARG" && exit 1 ;;
     esac
 done
@@ -91,6 +92,21 @@ function echo_and_exit() {
 #
 # END Utility functions
 #
+
+# Make sure we're in a vbash interactive shell environment
+# http://stackoverflow.com/a/13864829
+if [ -z ${vyatta_sbindir+x} ]; then
+    if [ "$environment_set" == "true" ]; then
+        echo "Error: vbash environment is not set!"
+        exit 1
+    else
+        # http://stackoverflow.com/a/4774063
+        script_path=`realpath $0`
+        
+        vbash -ic "$script_path"
+        exit $?
+    fi
+fi
 
 # Set up a Vyatta configuration session
 #
