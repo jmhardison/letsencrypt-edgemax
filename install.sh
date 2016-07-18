@@ -12,6 +12,12 @@ while getopts ':it' flag; do
     esac
 done
 
+# Make sure we're root
+if [ $EUID -ne 0 ]; then
+    echo This script must be run as root!
+    exit 1
+fi
+
 # Bring in our configuration and utilities
 script_dir=`dirname $0`
 source $script_dir/config.sh
@@ -28,6 +34,8 @@ mkdir -p "$cert_root_dir" || echo_and_exit "Could not create the Let's Encrypt d
 cp renew.sh $install_dir/renew.sh || echo_and_exit "Could not copy renew.sh to $install_dir!"
 cp util.sh $install_dir/util.sh || echo_and_exit "Could not copy util.sh to $install_dir!"
 cp config.sh $install_dir/config.sh || echo_and_exit "Could not copy config.sh to $install_dir!"
+
+chmod +x $install_dir/renew.sh $install_dir/util.sh $install_dir/config.sh
 
 # Download the ACME client script
 echo Downloading acme_tiny.py...
