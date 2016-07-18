@@ -74,6 +74,7 @@ set service gui cert-file "$ssl_cert"
 set service gui ca-file "$le_intermediate_ca"
 
 commit
+save
 
 echo Restarting Web GUI...
 restart_web_gui
