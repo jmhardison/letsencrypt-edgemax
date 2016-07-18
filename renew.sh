@@ -21,15 +21,24 @@ acme_tiny_url="https://raw.githubusercontent.com/diafygi/acme-tiny/fcb7cd6f66e95
 # END Configurable variables
 #
 
+# Make sure we're root
+if [ $EUID -ne 0 ]; then
+    echo This script must be run as root!
+    exit 1
+fi
+
 # http://stackoverflow.com/a/21128172
 implicit_yes=''
 ignore_version_err=''
+environment_set=''
+test=''
 
-while getopts ':yie' flag; do
+while getopts ':yiet' flag; do
     case "${flag}" in
         y) implicit_yes='true' ;;
         i) ignore_version_err='true' ;;
         e) environment_set='true' ;;
+        t) test='true' ;;
         *) echo "Unexpected option -$OPTARG" && exit 1 ;;
     esac
 done
@@ -103,7 +112,7 @@ if [ -z ${vyatta_sbindir+x} ]; then
         # http://stackoverflow.com/a/4774063
         script_path=`realpath $0`
         
-        vbash -ic "$script_path"
+        vbash -ic "$script_path $@"
         exit $?
     fi
 fi
@@ -190,14 +199,25 @@ else
 fi
 
 # Generate a CSR for the domain, if needed
-if [ ! -e "$domain_csr" ]; then
-    read -p "Enter the FQDN for your router: " fqdn
-
-    openssl req -new -sha256 -key "$domain_key" -subj "/CN=$fqdn" > "$domain_csr"
-else
-    fqdn=$(openssl req -noout -in "$domain_csr" -subject | sed -n '/^subject/s/^.*CN=//p')
+function generate_csr() {
+    if [ "$implicit_yes" == "true" ]; then
+        echo_and_exit "Domain CSR is not valid, run this without the -y flag!";
+    fi
     
-    echo Using the CSR at $domain_csr for domain $fqdn
+    read -p "Enter the FQDN for your router: " fqdn
+    openssl req -new -sha256 -key "$domain_key" -subj "/CN=$fqdn" > "$domain_csr"
+}
+
+if [ ! -e "$domain_csr" ]; then
+    generate_csr
+else
+    fqdn=`openssl req -noout -in "$domain_csr" -subject | sed -n '/^subject/s/^.*CN=//p'`
+
+    if [ "$fqdn" == "" ]; then
+        generate_csr
+    else
+        echo Using the CSR at $domain_csr for domain $fqdn
+    fi
 fi
 
 # Create a directory for the challenge files
@@ -319,8 +339,15 @@ echo Firewall rule that opens port 80 has been added.
 #
 # Everything's all set up, let's issue the certificate
 #
+acme_tiny_ca=''
+if [ "$test" == "true" ]; then
+    acme_tiny_ca="--ca https://acme-staging.api.letsencrypt.org"
+    
+    echo Using staging ACME server!
+fi
+
 python acme_tiny.py --account-key "$le_account_key" --csr "$domain_csr" \
-    --acme-dir "$challenge_dir" > "$signed_cert" \
+    --acme-dir "$challenge_dir" $acme_tiny_ca > "$signed_cert" \
         || echo_and_exit "Error: could not issue certificate!"
 
 #

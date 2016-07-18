@@ -15,6 +15,6 @@ curl "https://raw.githubusercontent.com/mgbowen/letsencrypt-edgemax/master/light
 curl "https://raw.githubusercontent.com/mgbowen/letsencrypt-edgemax/master/ubnt-gen-lighty-conf.sh.patch" > ubnt-gen-lighty-conf.sh.patch
 
 chmod +x renew.sh
-vbash -ic './renew.sh'
+./renew.sh
 
 popd > /dev/null
