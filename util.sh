@@ -3,10 +3,10 @@
 function ensure_version() {
     # Make sure we're on a good version
     if [ "$ignore_version_err" != "true" ]; then
-        version=`vbash -ic "show version" | grep Version: | awk -F' ' '{print $2}'`
+        build_id=`vbash -ic "show version" | grep "Build ID:" | awk -F' ' '{print $3}'`
         
-        if [ "$version" != "v1.8.5" ]; then
-            echo ERROR: This script is designed to use with EdgeMAX firmware v1.8.5. It will
+        if [ "$build_id" > "4901117" ]; then
+            echo ERROR: This script is designed to use with EdgeMAX firmware v1.9.0 (Build 4901118) or higher. It will
             echo not function properly with firmware older than this, but it may function with
             echo firmware newer than this. In either case, this script may not work on your
             echo system.
