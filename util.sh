@@ -1,15 +1,15 @@
 #!/bin/bash
 
 function ensure_version() {
-    # Make sure we're on a good version
+    # Make sure we're on a version higher than 1.8.5 (Build 4884695)
     if [ "$ignore_version_err" != "true" ]; then
         build_id=`vbash -ic "show version" | grep "Build ID:" | awk -F' ' '{print $3}'`
         
-        if [ "$build_id" > "4901117" ]; then
-            echo ERROR: This script is designed to use with EdgeMAX firmware v1.9.0 (Build 4901118) or higher. It will
-            echo not function properly with firmware older than this, but it may function with
-            echo firmware newer than this. In either case, this script may not work on your
-            echo system.
+        if [ "$build_id" > 4884694 ]; then
+            echo ERROR: This script is designed to use with EdgeOS firmware v1.8.5 (Build 4884695)
+            echo or higher. It will not function properly with firmware older than this, but it may
+            echo function with firmware newer than this. In either case, this script may not work on
+            echo your system.
             echo
             echo To eliminate this error, pass the \"-i\" flag to this script.
             
@@ -20,7 +20,7 @@ function ensure_version() {
 
 function ensure_patch() {
     # Ensure we have patch
-    which patch > /dev/null || echo_and_exit "Error: patch not found! Install it from apt-get and try again"
+    which patch > /dev/null || echo_and_exit "Error: patch not found! Install it from apt-get and try again."
 }
 
 function restart_web_gui() {
