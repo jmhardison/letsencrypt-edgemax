@@ -3,10 +3,10 @@
 function ensure_version() {
     # Make sure we're on a version higher than 1.8.5 (Build 4884695)
     if [ "$ignore_version_err" != "true" ]; then
-        build_id=`vbash -ic "show version" | grep "Build ID:" | awk -F' ' '{print $3}'`
+        build_id=$(vbash -ic "show version" | grep "Build ID:" | awk -F' ' '{print $3}')
         
-        if [ "$build_id" > 4884694 ]; then
-            echo ERROR: This script is designed to use with EdgeOS firmware v1.8.5 (Build 4884695)
+        if (( build_id > 4884694 )); then
+            echo ERROR: This script is designed to use with EdgeOS firmware v1.8.5 \(Build 4884695\)
             echo or higher. It will not function properly with firmware older than this, but it may
             echo function with firmware newer than this. In either case, this script may not work on
             echo your system.
@@ -25,7 +25,7 @@ function ensure_patch() {
 
 function restart_web_gui() {
     # https://community.ubnt.com/t5/EdgeMAX/GUI-restart-via-ssh/m-p/898366#M34391
-    pid=`ps -e | grep lighttpd | awk '{print $1;}'`
+    pid=$(ps -e | grep lighttpd | awk '{print $1;}')
     if [ "$pid" != "" ]; then kill $pid; fi
     /usr/sbin/lighttpd -f /etc/lighttpd/lighttpd.conf
 }
