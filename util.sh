@@ -9,12 +9,13 @@ function ensure_version() {
         local winner=$(echo -e "$version\n$min_version" | sort -nr | head -1)
         
         if [ "$winner" != "$version" ]; then
+            echo 
             echo ERROR: This script is designed to use with EdgeOS firmware v1.8.5 \(Build 4884695\)
             echo or higher. It will not function properly with firmware older than this, but it may
             echo function with firmware newer than this. In either case, this script may not work on
             echo your system.
             echo
-            echo To eliminate this error, pass the \"-i\" flag to this script.
+            echo To bypass this version check, pass the \"-i\" flag to this script.
             
             exit 1
         fi
