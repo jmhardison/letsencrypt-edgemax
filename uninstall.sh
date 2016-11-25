@@ -16,9 +16,9 @@ source $script_dir/config.sh
 source $script_dir/util.sh
 
 # Undo file patches
-cp /etc/lighttpd/lighttpd.conf.orig /etc/lighttpd/lighttpd.conf
+mv /etc/lighttpd/lighttpd.conf.orig /etc/lighttpd/lighttpd.conf
 
-cp /usr/sbin/ubnt-gen-lighty-conf.sh.orig /usr/sbin/ubnt-gen-lighty-conf.sh
+mv /usr/sbin/ubnt-gen-lighty-conf.sh.orig /usr/sbin/ubnt-gen-lighty-conf.sh
 
 # Remove directories created by script
 rm -rf "$install_dir"
