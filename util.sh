@@ -15,7 +15,7 @@ function ensure_version() {
             echo function with firmware newer than this. In either case, this script may not work on
             echo your system.
             echo
-            echo To bypass the version check (at your own risk), pass the \"-i\" flag to this script.
+            echo To bypass the version check \(at your own risk\), pass the \"-i\" flag to this script.
 
             exit 1
         fi
