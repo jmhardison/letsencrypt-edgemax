@@ -43,9 +43,6 @@ echo Regenerating configuration files...
 
 $(/usr/sbin/ubnt-gen-lighty-conf.sh)
 
-echo Restarting Web GUI...
-restart_web_gui
-
 # Change the router configuration to point to the default certificate
 echo Updating router configuration...
 
