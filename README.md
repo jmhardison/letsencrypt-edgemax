@@ -89,5 +89,16 @@ Usage: install.sh [-it]
         are valid with this script.
 ```
 
+## Uninstalling
+To undo the EdgeOS configuration changes made by the script and delete the new directories it created, run the uninstall script as root:
+  ```
+  sudo ./uninstall.sh
+  ```
+
+## Known Issues
+1. If you already have a Let's Encrypt account referencing the top-level domain of the FQDN for which you're attempting to create a Let's Encrypt certificate, the [`acme_tiny`](https://github.com/diafygi/acme-tiny) script will fail when attempting to parse the account key.
+
+2. Because the script responds to a port 80 request to authenticate the domain, if your router already has a forward set up on port 80, the script will generate a `challenge did not pass` error and fail. To work-around, remove the port 80 forward before running the script and restore it after the script completes.
+
 ## TODO
 For now, I've only documented on how to get the initial Let's Encrypt certificate. However, SSL certificates from Let's Encrypt are only valid for 90 days, and must be renewed frequently. The scripts are organized such that you should only need to call `renew.sh -y` to renew your certificate with no prompts, and you should be able to place this in a cron job on your router.
