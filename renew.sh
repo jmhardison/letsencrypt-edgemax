@@ -97,6 +97,7 @@ echo
 echo " The following iptables rule will be added to your firewall:"
 echo
 printf "     iptables -I INPUT 1 $iptable_rule_args\n"
+printf "     ip6tables -I INPUT 1 $iptable_rule_args\n"
 echo
 echo " This rule will be removed once the validation completes, or if the script"
 echo " exits at any point. This port will also be opened temporarily every time"
@@ -110,7 +111,13 @@ prompt_for_yes_or_exit "Are you sure you want to do this?" $implicit_yes
 # script exits, even if an error occurs
 function iptables_delete_rule() {
     iptables -D INPUT $iptable_rule_args
-    return $?
+    $v4=$?
+    ip6tables -D INPUT $iptable_rule_args
+    if [ $v4 -ne 0 ]; then
+                return $v4
+    else
+                return $?
+    fi
 }
 
 function iptables_atexit() {
@@ -121,6 +128,7 @@ trap iptables_atexit EXIT
 
 # Actually open the firewall
 iptables -I INPUT 1 $iptable_rule_args
+ip6tables -I INPUT 1 $iptable_rule_args
 
 echo Firewall rule that opens port 80 has been added.
 
