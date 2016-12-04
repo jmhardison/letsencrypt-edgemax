@@ -113,10 +113,11 @@ function iptables_delete_rule() {
     iptables -D INPUT $iptable_rule_args
     $v4=$?
     ip6tables -D INPUT $iptable_rule_args
+    $v6=$?
     if [ $v4 -ne 0 ]; then
                 return $v4
     else
-                return $?
+                return $v6
     fi
 }
 
